@@ -5,15 +5,17 @@ def kkr(
         cshfit :float=10**-9,
         plot :bool=False
     ):
-    Real = KKR_Real2Imag(Energy,
+    Imag = KKR_Real2Imag(Energy,
                          numpy.real(Eps),
                          cshfit,
                          plot)
-    Imag = KKR_Imag2Real(Energy,
+    Real = KKR_Imag2Real(Energy,
                          numpy.imag(Eps),
                          cshfit,
                          plot)
-                      
+KKR = numpy.array([complex(real,imag) for (real,imag) in zip(Real,Imag)])
+return(KKR)
+
 def KKR_Real2Imag(
         Energy :numpy.ndarray,
         Eps :numpy.ndarray,
