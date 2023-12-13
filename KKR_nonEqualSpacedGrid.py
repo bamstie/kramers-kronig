@@ -24,6 +24,7 @@ def KKR_Real2Imag(
         ):
     #falling Energy scale (eV, Hz) risign (nm)
     # care prefactor of integration substitude changing Energy units!
+    Flip =False
     if Energy[0] > Energy[1]:  #falling Energy scale
         Energy = numpy.flip(Energy)
         Eps = numpy.flip(Eps)
@@ -62,6 +63,7 @@ def KKR_Imag2Real(
         ):
     #falling Energy scale (eV, Hz) risign (nm)
     # care prefactor of integration substitude changing Energy units!
+    Flip =False
     if Energy[0] > Energy[1]: #falling Energy scale
         Energy = numpy.flip(Energy)
         Eps = numpy.flip(Eps)
