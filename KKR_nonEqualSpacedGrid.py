@@ -27,7 +27,7 @@ def KKR_Real2Imag(
         Eps = numpy.flip(Eps)
         Flip = True
     #interpolate equal spaced Energy grid
-    Wi = numpy.linspace(min(Energy), max(Energy), len(Energy)*10) #fact 10 not nessary
+    Wi = numpy.linspace(min(Energy), max(Energy), len(Energy)*10, endpoint=True) #fact 10 not nessary
     Eps_inter = numpy.interp(Wi , Energy, Eps)
     dE = Wi[1]- Wi[0]
     cshift = complex(0, dE * cshfit)
@@ -65,7 +65,7 @@ def KKR_Imag2Real(
         Eps = numpy.flip(Eps)
         Flip = True
     #interpolate equal spaced Energy grid
-    Wi = numpy.linspace(min(Energy), max(Energy), len(Energy)*10) #fact 10 not nessary
+    Wi = numpy.linspace(min(Energy), max(Energy), len(Energy)*10, endpoint=True) #fact 10 not nessary
     Eps_inter = numpy.interp(Wi , Energy, Eps)
     dE = Wi[1]- Wi[0]
     cshift = complex(0, dE * cshfit)
