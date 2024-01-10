@@ -1,0 +1,70 @@
+lib.lines import Line2D
+
+def TestKKR(
+            Data,
+            saveLoc :str
+            ):
+    fig, axs = plt.subplots(2, 1, layout='constrained', figsize=(11, 8))
+    Energy = Data._Energy()
+    Eps = Data.Data[0]._Eps_Pseudo()
+    for a in range(Data.lenAngle):
+        axs[0].plot(Energy.value,
+                    numpy.real(Eps.value)[a],
+                    ls="-", color="darkred")
+        axs[1].plot(Energy.value,
+                    numpy.imag(Eps.value)[a],
+                    ls="-", color="darkblue")
+        #KKR by hilbert transformation
+        _KKR_real = 1 + 2 / numpy.pi * numpy.imag(scipy.signal.hilbert(
+                                                    numpy.imag(Eps.value)[a])
+                                        )
+        _KKR_imag = -2 / numpy.pi * numpy.imag(scipy.signal.hilbert(
+                                                    numpy.real(Eps.value)[a])
+                                        )
+        axs[0].plot(Energy.value,
+                    _KKR_real,
+                    ls="--", color="lightcoral",
+                    label="KKR by hilbert transform"
+                    )
+        axs[1].plot(Energy.value,
+                    _KKR_imag,
+                    ls="--", color="lightblue",
+                    label="KKR by hilbert transform"
+                    )
+        #KKR self wirtten function 
+        from KKR import KKR_imag2real, KKR_real2imag
+        _KKR_real, _ =  KKR_imag2real(numpy.imag(Eps)[a].value, Energy)
+        _KKR_imag, _ = KKR_real2imag(numpy.real(Eps)[a].value, Energy)
+        axs[0].plot(Energy.value,
+                    _KKR_real,
+                    ls=":", color="red",
+                    label="KKR by self calc"
+                    )
+        axs[1].plot(Energy.value,
+                    _KKR_imag,
+                    ls=":", color="blue",
+                    label="KKR by self calc"
+                    )
+    axs[0].legend([Line2D([0], [0], color="darkred",ls='-', lw=4),
+                Line2D([0], [0], color="lightcoral",ls='--', lw=4),
+                Line2D([0], [0], color="red",ls=':', lw=4)],
+               ["real true vale",
+                "KKR by hilbert transform",
+                "KKR self calculate"],
+               fontsize=8, loc="lower right",
+               title="real Eps")
+    axs[1].legend([Line2D([0], [0], color="darkblue",ls='-', lw=4),
+                 Line2D([0], [0], color="lightblue",ls='--', lw=4),
+                 Line2D([0], [0], color="blue",ls=':', lw=4)],
+                ["imag true vale",
+                 "KKR by hilbert transform",
+                 "KKR self calculate"],
+                fontsize=9, loc="lower right",
+                title="imag Eps")
+    plt.tight_layout(pad=0.3)
+    fig = plt.gcf()
+    fig.savefig(fname=saveLoc+r'\\'+'KramerKronigTest' +'.eps', orientation='portrait', format='eps')
+    fig.savefig(fname=saveLoc+r'\\'+'KramerKronigTest' +'.png', orientation='portrait', format='png')
+    plt.show()
+    plt.close(fig)
+    return()
